@@ -1,5 +1,14 @@
 /* app css stylesheet */
 
+body{
+    background-color: #3d3d3d;;
+}
+
+.container{
+    margin-right: auto;
+    margin-left: auto;
+}
+
 .menu {
   list-style: none;
   border-bottom: 0.1em solid black;
@@ -27,4 +36,8 @@
 .menu > li:nth-child(1):before {
   content: "";
   padding: 0;
+}
+
+nav .nav-wrapper{
+    background-color: black;
 }

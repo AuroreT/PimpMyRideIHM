@@ -1,14 +1,17 @@
 'use strict';
 
-// Declare app level module which depends on views, and components
 angular.module('myApp', [
   'ngRoute',
-  'myApp.view1',
+  'myApp.dashboard',
   'myApp.view2',
-  'myApp.version'
+  'myApp.version',
+    'leaflet-directive'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
-  $locationProvider.hashPrefix('!');
+    $locationProvider.hashPrefix('!');
 
-  $routeProvider.otherwise({redirectTo: '/dashboard'});
+    $routeProvider.when('/dashboard', {
+        templateUrl: 'dashboard/dashboard.html',
+        controller: 'DashboardCtrl as dashboard'
+    }).otherwise({redirectTo: '/dashboard'});
 }]);
