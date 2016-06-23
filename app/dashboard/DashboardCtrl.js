@@ -1,14 +1,19 @@
+/*
 'use strict';
 
-angular.module('myApp.dashboard', ['ngRoute'])
-
+angular.module('dashboard', ['ngRoute'])
 .controller('DashboardCtrl', ['$scope', function($scope) {
-
     var vm = this;
     vm.title = "Vue Dashboard";
 
 
-/*    var local_icons = {
+    vm.test = function () {
+        var retourService = PositionService.resource.get();
+        console.log('retour service', retourService);
+    };
+
+
+/!*    var local_icons = {
         default_icon: {},
         leaf_icon: {
             iconUrl: 'assets/images/leaf-green.png',
@@ -37,9 +42,9 @@ angular.module('myApp.dashboard', ['ngRoute'])
 
     angular.extend($scope, {
         icons: local_icons
-    });*/
+    });*!/
 
-/*    var regions = {
+/!*    var regions = {
         paris: {
             northEast: {
                 lat: 49.15280224425956,
@@ -59,7 +64,7 @@ angular.module('myApp.dashboard', ['ngRoute'])
         } else {
             $scope.maxbounds = regions[region];
         }
-    };*/
+    };*!/
 
     angular.extend($scope, {
         trotinettePlace: {
@@ -83,7 +88,7 @@ angular.module('myApp.dashboard', ['ngRoute'])
         }
     });
 
-/*    $scope.addMarkers = function (marker) {
+/!*    $scope.addMarkers = function (marker) {
         angular.extend($scope, {
             markers: {
                 trotinettePlace: {
@@ -93,7 +98,7 @@ angular.module('myApp.dashboard', ['ngRoute'])
                 }
             }
         });
-    };*/
+    };*!/
 
     $scope.$on("leafletDirectiveMarker.dragend", function (event, args) {
         $scope.position.lat = args.model.lat;
@@ -101,4 +106,23 @@ angular.module('myApp.dashboard', ['ngRoute'])
     });
 
 }]);
+*/
 
+
+(function() {
+    'use strict';
+
+    function DashboardCtrl(PositionService, TemperatureService, SpeedService) {
+        var vm = this;
+        vm.positions = undefined;
+
+        vm.test = function () {
+            SpeedService.resource.get({}, function (datas) {
+                vm.positions = datas;
+            });
+            console.log('test ok', vm.positions);
+        };
+
+    }
+    angular.module('dashboard').controller('DashboardCtrl', DashboardCtrl);
+}());
