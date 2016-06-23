@@ -46,5 +46,26 @@ nav .nav-wrapper{
     text-align: center;
 }
 .datas{
-    color: #b2c831 !important;
+    color: #37db27 !important;
+}
+
+.logo{
+    height: 60%;
+}
+
+.card-action{
+    text-align: -webkit-right;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-floating){
+    margin-right: 0;
+
+}
+
+i{
+    cursor: pointer;
+}
+
+.i.small{
+    font-size: 2.5rem;
 }

@@ -1,6 +1,5 @@
 <div class="container">
     <div class="row">
-        <button class="btn" ng-click="dashboard.test()">TEST</button>
         <div class="col s4 m4">
             <div class="card blue-grey darken-4">
                 <div class="card-content white-text">
@@ -10,7 +9,7 @@
                     </p>
                 </div>
                 <div class="card-action">
-                    <a href="#">Localiser</a>
+                    <a class="tooltipped" data-position="top" data-delay="50" data-tooltip="Localiser"><i ng-click="dashboard.test()" class="small material-icons">navigation</i></a>
                 </div>
             </div>
         </div>
@@ -21,7 +20,7 @@
                     <p class="datas">42°</p>
                 </div>
                 <div class="card-action">
-                    <a href="#">Actualiser</a>
+                    <a class="tooltipped" data-position="top" data-delay="50" data-tooltip="Rafraichir"><i ng-click="dashboard.test()" class="small material-icons left-align">loop</i></a>
                 </div>
             </div>
         </div>
@@ -32,7 +31,7 @@
                     <p class="datas">61%</p>
                 </div>
                 <div class="card-action">
-                    <a href="#">Rafraichir</a>
+                    <a class="tooltipped" data-position="top" data-delay="50" data-tooltip="Rafraichir"><i ng-click="dashboard.test()" class="small material-icons">loop</i></a>
                 </div>
             </div>
         </div>
