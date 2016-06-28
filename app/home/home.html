@@ -60,27 +60,55 @@
     </form>
 
     <!-- If user is logged @todo ajouter la condition de vérification si loggé-->
-    <div ng-if="home.isLogged">
+    <div ng-if="home.isLogged" class="showInfo">
         <h2>Profile</h2>
-        <div class="col s4">
+       <!-- <div class="col s4 offset-s2">
             <div class="row">
-                <label>Display Name</label> {{ home.currentUser.displayName }}
+                <label>Display Name: </label> <p class="userInfo">{{ home.currentUser.displayName }}</p>
             </div>
             <div class="row">
-                <label>Username</label> {{ home.currentUser.username }}
+                <label>Username: </label><p class="userInfo">{{ home.currentUser.username }}</p>
             </div>
             <div class="row">
-                <label>Email</label> {{ home.currentUser.email }}
+                <label>Email: </label><p class="userInfo">{{ home.currentUser.email }}</p>
             </div>
             <div class="row">
             </div>
             <button class="btn modal-trigger" data-target="modal1"><i class="fa fa-pencil" aria-hidden="true"></i>
                 Edit
             </button>
+        </div>-->
+        <div class="col s4 offset-s2">
+            <div class="card-panel blue-grey darken-3 cardProfile">
+                <div class="card-content white-text">
+
+                    <div class="row">
+                        <label>Display Name: </label> <p class="userInfo">{{ home.currentUser.displayName }}</p>
+                    </div>
+                    <div class="row">
+                        <label>Username: </label><p class="userInfo">{{ home.currentUser.username }}</p>
+                    </div>
+                    <div class="row">
+                        <label>Email: </label><p class="userInfo">{{ home.currentUser.email }}</p>
+                    </div>
+                    <div class="row">
+                    </div>
+                    <button class="btn modal-trigger" data-target="modal1"><i class="fa fa-pencil" aria-hidden="true"></i>
+                        Edit
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="col s4">
-            <label>My scooters</label>
-            <div ng-repeat="scooter in home.currentUser.scooters"></div>
+    </div>
+
+            <ul class="collection with-header" ng-repeat="scooter in home.scootersList">
+                <li class="collection-header"><h4>My scooters</h4></li>
+                <li class="collection-item">
+                    <div> {{ scooter.name }}
+                        <a href="#modal2" class="secondary-content"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
@@ -112,9 +140,22 @@
     </div>
     <div class="modal-footer">
         <button class="btn modal-close" ng-click="home.updateUser()">Save</button>
-<!--
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Save</a>
--->
+        <a href="#!/home" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+    </div>
+</div>
+
+<div id="modal2" class="modal modal-fixed-footer modalUser">
+    <div class="modal-content">
+        <h2>Edit scooter:</h2>
+        <div class="row">
+            <div class="input-field">
+                <label for="name">Name</label>
+                <input id="name" class="inputModal" ng-model="scooter.name" type="text" class="validate">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn modal-close" ng-click="home.updateScooter()">Save</button>
         <a href="#!/home" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
     </div>
 </div>

@@ -85,3 +85,26 @@ i{
 .labelModal{
     margin-top: 2em;
 }
+
+.showInfo{
+    text-align: center;
+}
+
+.userInfo{
+    display: inline-block;
+    margin-left: 1em;
+}
+
+.cardProfile{
+    margin: 0;
+}
+
+.collection.with-header .collection-header{
+    background-color: #37474f;
+    color: #9e9e9e;
+}
+
+.collection.with-header .collection-item{
+    background-color: #37474f;
+    color: white;
+}

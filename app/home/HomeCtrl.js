@@ -1,11 +1,12 @@
 (function() {
     'use strict';
 
-    function HomeCtrl(localStorageService, $location, UserService) {
+    function HomeCtrl(localStorageService, $location, UserService, ScooterService) {
         var vm = this;
 
         vm.currentUser = undefined;
         vm.currentUserCopy = undefined;
+        vm.scootersList = [];
         vm.isLogginSpace = false;
         vm.isLogged = true;
 
@@ -30,7 +31,6 @@
         };
 
         $(document).ready(function(){
-            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
             $('.modal-trigger').leanModal();
         });
 
@@ -50,6 +50,15 @@
                  vm.currentUser = datas.user;
                  vm.currentUserCopy = angular.copy(vm.currentUser);
                 console.log(vm.currentUser);
+            });
+
+            ScooterService.resource.get(function (datas) {
+                console.log('retour scooter service', datas);
+                for(var i = 0; i < datas.scooters.length; i++){
+                    if(datas.scooters[i].owner_id === '576d46c095269a1100b5d6ae'){
+                        vm.scootersList.push(datas.scooters[i]);
+                    }
+                }
             });
         })();
     }

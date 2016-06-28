@@ -9,9 +9,8 @@
         vm.humidity = "61%";
 
         vm.test = function () {
-            SpeedService.resource.get({}, function (datas) {
+            TemperatureService.resource.get({}, function (datas) {
                 vm.positions = datas;
-                console.log(response);
             });
             console.log('test ok', vm.positions);
         };
