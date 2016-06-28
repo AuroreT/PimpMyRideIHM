@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css">
     <link rel="stylesheet" href="http://s.mlcdn.co/animate.css">
+    <link rel="stylesheet" href="bower_components/font-awesome-4.6.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="app.css">
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
@@ -24,7 +25,7 @@
           <img class="logo" src="components/img/LOGO.png">
           <ul class="right hide-on-med-and-down">
               <li class="active"><a href="#!/dashboard"><i class="material-icons left">dashboard</i>Dasboard</a></li>
-              <li><a href="#!/view2"><i class="material-icons left">build</i>Autre vue</a></li>
+              <li><a href="#!/home"><i class="material-icons left">perm_identity</i></a></li>
           </ul>
       </div>
   </nav>
@@ -40,20 +41,24 @@
   <script src="bower_components/angular-simple-logger/dist/angular-simple-logger.min.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+  <script src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
   <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-leaflet-directive/0.10.0/angular-leaflet-directive.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-leaflet-directive/0.10.0/angular-leaflet-directive.min.js"></script>
   <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
   <script type="text/javascript" src="bower_components/Materialize/dist/js/materialize.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.10/ngStorage.min.js"></script>
 
 
   <script src="app.js"></script>
   <script src="dashboard/dashboard.js"></script>
   <script src="dashboard/DashboardCtrl.js"></script>
+  <script src="home/home.js"></script>
+  <script src="home/HomeCtrl.js"></script>
+  <script src="home/services/UserService.js"></script>
   <script src="dashboard/services/PositionService.js"></script>
   <script src="dashboard/services/TemperatureService.js"></script>
   <script src="dashboard/services/SpeedService.js"></script>
-  <script src="view2/view2.js"></script>
 
   <script src="components/version/version.js"></script>
   <script src="components/version/version-directive.js"></script>

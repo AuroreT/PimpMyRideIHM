@@ -1,13 +1,17 @@
 (function() {
     'use strict';
 
-    function DashboardCtrl(PositionService, TemperatureService, SpeedService, $scope) {
+    function DashboardCtrl(PositionService, TemperatureService, SpeedService, $scope, localStorageService) {
         var vm = this;
         vm.positions = undefined;
+        
+        vm.temperature = "42°";
+        vm.humidity = "61%";
 
         vm.test = function () {
             SpeedService.resource.get({}, function (datas) {
                 vm.positions = datas;
+                console.log(response);
             });
             console.log('test ok', vm.positions);
         };
@@ -49,6 +53,15 @@
             $scope.position.lat = args.model.lat;
             $scope.position.lng = args.model.lng;
         });
+
+        /**
+         * Point d'entrée du ctrler
+         */
+        (function () {
+           vm.test();
+            var currentUser = localStorageService.get('user');
+            console.log('test user dash', currentUser);
+        })();
     }
     angular.module('dashboard').controller('DashboardCtrl', DashboardCtrl);
 }());

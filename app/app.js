@@ -4,13 +4,15 @@
 var app = angular.module('myApp', [
     'ngRoute',
     'ngResource',
-    'myApp.view2',
+    'home',
     'dashboard',
     'myApp.version',
-    'leaflet-directive'
+    'leaflet-directive',
+    'ngStorage',
+    'LocalStorageModule'
 ]);
 
-    app.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
+    app.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider, localStorageService, $localStorage, $route, $location) {
         $locationProvider.hashPrefix('!');
     
         $routeProvider
@@ -18,9 +20,16 @@ var app = angular.module('myApp', [
                 templateUrl: 'dashboard/dashboard.html',
                 controller: 'DashboardCtrl as dashboard'
             })
-            .when('/view2', {
-                templateUrl: 'view2/view2.html',
-                controller: 'View2Ctrl'
+            .when('/home', {
+                templateUrl: 'home/home.html',
+                controller: 'HomeCtrl as home'
             })
             .otherwise({redirectTo: '/dashboard'});
+
+        /*$scope.logout = function(){
+            $localStorage.$reset();
+            $route.reload();
+            window.location.reload();
+            $location.path("/home");
+        }*/
 }]);
