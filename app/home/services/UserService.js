@@ -5,7 +5,7 @@
 
         var apiPath = 'http://pimp-my-ride.herokuapp.com';
 
-        var resource = $resource(apiPath+'/users/:user', {user: '@usr' }, {
+        var resource = $resource(apiPath+'/users/:id', {id: '@id' }, {
             post:{
                 method:"POST"
                /* isArray:true,
@@ -13,6 +13,9 @@
                     Accept: 'text/html, application/json, text/plain, *!/!*' ,
                     Authorization: 'Bearer '+ token
                 }*/
+            },
+            update: {
+                method: "PUT"
             }
         });
 

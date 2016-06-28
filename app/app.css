@@ -73,3 +73,15 @@ i{
 .logForm{
     text-align: center;
 }
+
+.modalUser{
+    text-align: center;
+}
+
+.inputModal{
+    width: 60% !important;
+}
+
+.labelModal{
+    margin-top: 2em;
+}
