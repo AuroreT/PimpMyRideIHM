@@ -6,9 +6,6 @@
         var apiPath = 'http://pimp-my-ride.herokuapp.com';
 
         var resource = $resource(apiPath+'/scooters/:id', {id: '@id' }, {
-            post:{
-                method:"POST"
-            },
             update: {
                 method: "PUT"
             }

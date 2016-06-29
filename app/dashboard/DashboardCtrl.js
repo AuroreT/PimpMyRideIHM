@@ -1,19 +1,13 @@
 (function() {
     'use strict';
 
-    function DashboardCtrl(PositionService, TemperatureService, SpeedService, $scope, localStorageService) {
+    function DashboardCtrl($scope, localStorageService) {
         var vm = this;
         vm.positions = undefined;
         
         vm.temperature = "42°";
         vm.humidity = "61%";
 
-        vm.test = function () {
-            TemperatureService.resource.get({}, function (datas) {
-                vm.positions = datas;
-            });
-            console.log('test ok', vm.positions);
-        };
         angular.extend($scope, {
             trotinettePlace: {
                 lat: 48.9404504,
@@ -57,7 +51,6 @@
          * Point d'entrée du ctrler
          */
         (function () {
-           vm.test();
             var currentUser = localStorageService.get('user');
             console.log('test user dash', currentUser);
         })();

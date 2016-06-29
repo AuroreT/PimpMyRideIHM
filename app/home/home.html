@@ -1,6 +1,6 @@
 <div class="row">
     <!-- If user has account -->
-    <form class="col s12" ng-if="home.isLogginSpace && home.isLogged === false" ng-submit="home.connect(user)"  autocomplete="on">
+    <form class="col s12" ng-if="home.isLogginSpace && isLogged === false" ng-submit="home.connect(user)"  autocomplete="on">
         <fieldset>
 
             <div class="row logForm">
@@ -25,7 +25,7 @@
     </form>
 
     <!-- If user does not have account -->
-    <form class="col s12" ng-if="home.isLogginSpace === false && home.isLogged === false" ng-submit="home.create(u)"  autocomplete="on">
+    <form class="col s12" ng-if="home.isLogginSpace === false && isLogged === false" ng-submit="home.create(u)"  autocomplete="on">
         <div class="row logForm">
             <h3>Create new account</h3>
             <div class="row logForm">
@@ -60,24 +60,8 @@
     </form>
 
     <!-- If user is logged @todo ajouter la condition de vérification si loggé-->
-    <div ng-if="home.isLogged" class="showInfo">
+    <div ng-if="isLogged" class="showInfo">
         <h2>Profile</h2>
-       <!-- <div class="col s4 offset-s2">
-            <div class="row">
-                <label>Display Name: </label> <p class="userInfo">{{ home.currentUser.displayName }}</p>
-            </div>
-            <div class="row">
-                <label>Username: </label><p class="userInfo">{{ home.currentUser.username }}</p>
-            </div>
-            <div class="row">
-                <label>Email: </label><p class="userInfo">{{ home.currentUser.email }}</p>
-            </div>
-            <div class="row">
-            </div>
-            <button class="btn modal-trigger" data-target="modal1"><i class="fa fa-pencil" aria-hidden="true"></i>
-                Edit
-            </button>
-        </div>-->
         <div class="col s4 offset-s2">
             <div class="card-panel blue-grey darken-3 cardProfile">
                 <div class="card-content white-text">

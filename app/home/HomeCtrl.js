@@ -1,33 +1,55 @@
 (function() {
     'use strict';
 
-    function HomeCtrl(localStorageService, $location, UserService, ScooterService) {
+    function HomeCtrl(localStorageService, $rootScope, UserService, ScooterService, $scope) {
         var vm = this;
 
         vm.currentUser = undefined;
         vm.currentUserCopy = undefined;
         vm.scootersList = [];
-        vm.isLogginSpace = false;
-        vm.isLogged = true;
+        vm.isLogginSpace = true;
+        $rootScope.isLogged = false;
 
         vm.switchToInscription = function () {
             vm.isLogginSpace = false;
         };
+
+        
 
         vm.create = function (usr) {
             UserService.resource.post(usr, function (datas) {
                 console.log(datas);
             });
         };
+        
 
         vm.connect = function (u) {
-            UserService.resource.query(function (datas) {
-                console.log(datas);
-            });
+            if(!localStorageService.user){
+                UserService.token.login({
+                    username: u.username,
+                    password: u.password
+                }, function (data) {
+                    localStorageService.user = {
+                        token: data.token
+                    };
+                    $rootScope.isLogged = true;
+                    console.log('test user id', localStorageService.user);
+                    /*UserService.resource.get({id: localStorageService.user.id}, function (datas) {
+                     vm.currentUser = datas.user;
+                     vm.currentUserCopy = angular.copy(vm.currentUser);
+                     console.log(vm.currentUser);
+                     });*/
 
-            //localStorageService.set('user',u);
-            //window.location.reload();
-            //$location.path("/dashboard");
+                    UserService.me.get(function (d) {
+                        vm.currentUser = d;
+                        console.log('currentUser', vm.currentUser);
+                    });
+
+
+                    //window.location.reload();
+                    //$location.path("/home");
+                });
+            }
         };
 
         $(document).ready(function(){
@@ -46,11 +68,7 @@
          * Entry point
          */
         (function () {
-             UserService.resource.get({id: '576d46c095269a1100b5d6ae'}, function (datas) {
-                 vm.currentUser = datas.user;
-                 vm.currentUserCopy = angular.copy(vm.currentUser);
-                console.log(vm.currentUser);
-            });
+
 
             ScooterService.resource.get(function (datas) {
                 console.log('retour scooter service', datas);

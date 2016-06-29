@@ -24,12 +24,5 @@ var app = angular.module('myApp', [
                 templateUrl: 'home/home.html',
                 controller: 'HomeCtrl as home'
             })
-            .otherwise({redirectTo: '/dashboard'});
-
-        /*$scope.logout = function(){
-            $localStorage.$reset();
-            $route.reload();
-            window.location.reload();
-            $location.path("/home");
-        }*/
-}]);
+            .otherwise({redirectTo: '/home'});
+    }]);
