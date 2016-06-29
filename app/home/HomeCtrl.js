@@ -1,83 +1,95 @@
 (function() {
     'use strict';
 
-    function HomeCtrl(localStorageService, $rootScope, UserService, ScooterService, $scope) {
+    function HomeCtrl(localStorageService, $rootScope, UserService, ScooterService, $location) {
         var vm = this;
 
-        vm.currentUser = undefined;
-        vm.currentUserCopy = undefined;
+        $rootScope.currentUser = undefined;
+        $rootScope.currentUserCopy = undefined;
         vm.scootersList = [];
-        vm.isLogginSpace = true;
-        $rootScope.isLogged = false;
+        vm.register = false;
 
-        vm.switchToInscription = function () {
-            vm.isLogginSpace = false;
-        };
-
-        
-
+        /**
+         * User creation
+         * @param usr
+         */
         vm.create = function (usr) {
             UserService.resource.post(usr, function (datas) {
                 console.log(datas);
             });
         };
-        
 
+        /**
+         * Redirection if cancel register
+         */
+        vm.cancel = function () {
+            vm.register = false;
+            $location.path('/home');
+        };
+
+        /**
+         * Connection user, get datas
+         * @param u
+         */
         vm.connect = function (u) {
             if(!localStorageService.user){
+                var spinner = new Spinner().spin();
+                document.getElementById('spinner').appendChild(spinner.el);
                 UserService.token.login({
                     username: u.username,
                     password: u.password
                 }, function (data) {
-                    localStorageService.user = {
-                        token: data.token
-                    };
-                    $rootScope.isLogged = true;
-                    console.log('test user id', localStorageService.user);
-                    /*UserService.resource.get({id: localStorageService.user.id}, function (datas) {
-                     vm.currentUser = datas.user;
-                     vm.currentUserCopy = angular.copy(vm.currentUser);
-                     console.log(vm.currentUser);
-                     });*/
-
-                    UserService.me.get(function (d) {
-                        vm.currentUser = d;
-                        console.log('currentUser', vm.currentUser);
+                    $rootScope.token = data.token;
+                    spinner.stop();
+                    UserService.me.get({token: $rootScope.token},function (d) {
+                        $rootScope.currentUser = d.user;
+                        $rootScope.currentUserCopy = angular.copy($rootScope.currentUser); //for dissociation modal view/page view
+                        $rootScope.scootersList = $rootScope.currentUser.scooters;
                     });
-
-
+                    $rootScope.isLogged = true;
                     //window.location.reload();
                     //$location.path("/home");
                 });
             }
         };
 
-        $(document).ready(function(){
-            $('.modal-trigger').leanModal();
-        });
+        /**
+         * Gestion modal
+         */
+        vm.openModal = function () {
+            $('#modal1').openModal();
+        };
 
+        /**
+         * Modification user
+         */
         vm.updateUser = function () {
-            console.log(vm.currentUser);
-            vm.currentUser = vm.currentUserCopy;
-            UserService.resource.update(vm.currentUser, function (datas) {
+            $rootScope.currentUser = $rootScope.currentUserCopy;
+            UserService.resource.update($rootScope.currentUser, function (datas) {
                 console.log('vérif maj', datas);
             });
         };
 
         /**
-         * Entry point
+         * If creation user
+         */
+        vm.needRegister = function () {
+            vm.register = true;
+        };
+
+        /**
+         * Entry point of controller
          */
         (function () {
+            console.log('currentUser', $rootScope.currentUser);
 
+            //Check if user is already logged
+            if($rootScope.token == null){
+                $rootScope.isLogged = false;
+            }else if($rootScope.token != null){
+                $rootScope.isLogged = true;
+            }
 
-            ScooterService.resource.get(function (datas) {
-                console.log('retour scooter service', datas);
-                for(var i = 0; i < datas.scooters.length; i++){
-                    if(datas.scooters[i].owner_id === '576d46c095269a1100b5d6ae'){
-                        vm.scootersList.push(datas.scooters[i]);
-                    }
-                }
-            });
         })();
     }
     angular.module('home').controller('HomeCtrl', HomeCtrl);

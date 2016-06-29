@@ -108,3 +108,7 @@ i{
     background-color: #37474f;
     color: white;
 }
+
+.refreshBtn{
+    padding: 0 !important;
+}

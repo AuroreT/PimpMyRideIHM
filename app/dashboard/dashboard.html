@@ -1,3 +1,6 @@
+<div class="row">
+    <a class="col offset-s11 btn-floating btn-large waves-effect waves-light refreshBtn" ng-click="dashboard.refreshDatas()"><i class="fa fa-refresh" aria-hidden="true"></i></a>
+</div>
 <div class="container">
     <div class="row">
         <div class="col s4 m4">
@@ -8,9 +11,6 @@
                         comme par exemple en mettant son propriétaire ou l'équipement dont elle bénéficie.
                     </p>
                 </div>
-                <div class="card-action">
-                    <a class="tooltipped" data-position="top" data-delay="50" data-tooltip="Localiser"><i ng-click="dashboard.test()" class="small material-icons">navigation</i></a>
-                </div>
             </div>
         </div>
         <div class="col s4 m4">
@@ -19,9 +19,6 @@
                     <span class="card-title">Température de l'air</span>
                     <p class="datas" ng-model="temperature" ng-bind="dashboard.temperature"></p>
                 </div>
-                <div class="card-action">
-                    <a class="tooltipped" data-position="top" data-delay="50" data-tooltip="Rafraichir"><i ng-click="dashboard.test()" class="small material-icons left-align">loop</i></a>
-                </div>
             </div>
         </div>
         <div class="col s4 m4">
@@ -29,9 +26,6 @@
                 <div class="card-content white-text">
                     <span class="card-title">Humidité</span>
                     <p class="datas" ng-model="humidity" ng-bind="dashboard.humidity"></p>
-                </div>
-                <div class="card-action">
-                    <a class="tooltipped" data-position="top" data-delay="50" data-tooltip="Rafraichir"><i ng-click="dashboard.test()" class="small material-icons">loop</i></a>
                 </div>
             </div>
         </div>

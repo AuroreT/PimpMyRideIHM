@@ -1,8 +1,8 @@
 (function() {
 
-    angular.module('home').directive('navbar', function () {
+    angular.module('myApp').directive('navbar', function () {
 
-        var appCtrl = function ($route, $location, $scope, localStorageService, $rootScope) {
+        var navCtrl = function ($route, $location, $scope, localStorageService, $rootScope) {
 
             var vm = this;
             vm.isLogged = false;
@@ -23,7 +23,7 @@
             '   <div class="nav-wrapper">' +
             '       <img class="logo" src="components/img/LOGO.png">' +
             '       <ul  id="navBar" class="right">' +
-            '           <li><a href="#!/dashboard"><i class="material-icons left">dashboard</i>Dasboard</a></li> '+
+            '           <li ng-show="vm.isLogged"><a href="#!/dashboard"><i class="material-icons left">dashboard</i>Dasboard</a></li> '+
             '           <li><a href="#!/home"><i class="material-icons left">perm_identity</i></a></li> '+
             '           <li ng-show="vm.isLogged"><a href ng-click="vm.logout()"><i class="fa fa-power-off" aria-hidden="true"></i></a></li>' +
             '       </ul>' +
@@ -32,7 +32,7 @@
 
         return {
             restrict: 'EA',
-            controller: appCtrl,
+            controller: navCtrl,
             controllerAs: 'vm',
             bindToController: true,
             template: template

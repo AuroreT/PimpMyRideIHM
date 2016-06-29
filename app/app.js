@@ -12,9 +12,9 @@ var app = angular.module('myApp', [
     'LocalStorageModule'
 ]);
 
-    app.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider, localStorageService, $localStorage, $route, $location) {
+    app.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider,$rootScope, localStorageService, $localStorage, $route, $location) {
         $locationProvider.hashPrefix('!');
-    
+
         $routeProvider
             .when('/dashboard', {
                 templateUrl: 'dashboard/dashboard.html',

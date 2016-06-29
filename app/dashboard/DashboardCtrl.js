@@ -1,12 +1,19 @@
 (function() {
     'use strict';
 
-    function DashboardCtrl($scope, localStorageService) {
+    function DashboardCtrl($scope, $rootScope) {
         var vm = this;
-        vm.positions = undefined;
-        
+        vm.position = undefined;
         vm.temperature = "42°";
         vm.humidity = "61%";
+
+        vm.getDatas = function () {
+            
+        };
+
+        vm.refreshDatas = function () {
+            console.log('refresh');
+        };
 
         angular.extend($scope, {
             trotinettePlace: {
@@ -51,8 +58,9 @@
          * Point d'entrée du ctrler
          */
         (function () {
-            var currentUser = localStorageService.get('user');
-            console.log('test user dash', currentUser);
+            console.log('$token',$rootScope.token);
+            vm.currentUser = $rootScope.currentUser;
+            vm.getDatas();
         })();
     }
     angular.module('dashboard').controller('DashboardCtrl', DashboardCtrl);

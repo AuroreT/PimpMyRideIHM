@@ -1,18 +1,21 @@
 <div class="row">
-    <!-- If user has account -->
-    <form class="col s12" ng-if="home.isLogginSpace && isLogged === false" ng-submit="home.connect(user)"  autocomplete="on">
+
+    <span id="spinner"></span>
+
+    <!--LOG FORM - If user has account -->
+    <form class="col s12" ng-if="isLogged === false && home.register == false" ng-submit="home.connect(user)"  autocomplete="on">
         <fieldset>
 
             <div class="row logForm">
                 <div class="input-field col s4 offset-s4">
                     <label for="usernamelog">Username</label>
-                    <input id="usernamelog"  ng-model="user.username" type="text" class="validate">
+                    <input id="usernamelog"  ng-model="user.username" type="text" class="validate" ng-required="true">
                 </div>
             </div>
             <div class="row logForm">
                 <div class="input-field col s4 offset-s4">
                     <label for="password">Password</label>
-                    <input id="password" ng-model="user.password" type="password" class="validate">
+                    <input id="password" ng-model="user.password" type="password" class="validate" ng-required="true">
                 </div>
             </div>
         </fieldset>
@@ -20,12 +23,12 @@
         <div class="row logForm">
             <button class="btn waves-effect waves-light" type="submit">Connect
             </button>
-            <p class="logForm">If you don't have an account yet, <a href="#!/home" ng-click="home.switchToInscription()">click here</a></p>
+            <p class="logForm">If you don't have an account yet, <a href="#!/home" ng-click="home.needRegister()">click here</a></p>
         </div>
     </form>
 
-    <!-- If user does not have account -->
-    <form class="col s12" ng-if="home.isLogginSpace === false && isLogged === false" ng-submit="home.create(u)"  autocomplete="on">
+    <!-- REGISTER FORM - If user does not have account -->
+    <form class="col s12" ng-if="home.register" ng-submit="home.create(u)"  autocomplete="on">
         <div class="row logForm">
             <h3>Create new account</h3>
             <div class="row logForm">
@@ -53,51 +56,49 @@
                 </div>
             </div>
             <div class="row logForm">
+                <a class="btn waves-effect waves-light red" type="button" ng-click="home.cancel()">Cancel
+                </a>
                 <button class="btn waves-effect waves-light" type="submit" name="action">Create
                 </button>
             </div>
         </div>
     </form>
 
-    <!-- If user is logged @todo ajouter la condition de vérification si loggé-->
-    <div ng-if="isLogged" class="showInfo">
+    <!-- PROFILE - If user is logged -->
+    <div ng-if="isLogged && home.register == false" class="showInfo">
         <h2>Profile</h2>
         <div class="col s4 offset-s2">
             <div class="card-panel blue-grey darken-3 cardProfile">
                 <div class="card-content white-text">
+                    <div class="row">
+                        <label>Display Name: </label> <p class="userInfo">{{ currentUser.displayName }}</p>
+                    </div>
+                    <div class="row">
+                        <label>Username: </label><p class="userInfo">{{ currentUser.username }}</p>
+                    </div>
+                    <div class="row">
+                        <label>Email: </label><p class="userInfo">{{ currentUser.email }}</p>
+                    </div>
+                    <div class="row">
+                    </div>
 
-                    <div class="row">
-                        <label>Display Name: </label> <p class="userInfo">{{ home.currentUser.displayName }}</p>
-                    </div>
-                    <div class="row">
-                        <label>Username: </label><p class="userInfo">{{ home.currentUser.username }}</p>
-                    </div>
-                    <div class="row">
-                        <label>Email: </label><p class="userInfo">{{ home.currentUser.email }}</p>
-                    </div>
-                    <div class="row">
-                    </div>
-                    <button class="btn modal-trigger" data-target="modal1"><i class="fa fa-pencil" aria-hidden="true"></i>
+                    <button ng-click="home.openModal()" class="btn modal-trigger"><i class="fa fa-pencil" aria-hidden="true"></i>
                         Edit
                     </button>
                 </div>
             </div>
         </div>
     </div>
-
-            <ul class="collection with-header" ng-repeat="scooter in home.scootersList">
-                <li class="collection-header"><h4>My scooters</h4></li>
-                <li class="collection-item">
-                    <div> {{ scooter.name }}
-                        <a href="#modal2" class="secondary-content"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                    </div>
-                </li>
-            </ul>
-        </div>
+    </div>
+        <ul class="collection with-header" ng-repeat="scooter in home.scootersList">
+            <li class="collection-header"><h4>My scooters</h4></li>
+            <li class="collection-item">
+                <div> {{ scooter.name }}
+                </div>
+            </li>
+        </ul>
     </div>
 </div>
-
-
 
 <!-- Modal Structure -->
 <div id="modal1" class="modal modal-fixed-footer modalUser">
@@ -106,40 +107,24 @@
         <div class="row">
             <div class="input-field">
                 <label for="username">Username</label>
-                <input id="username" class="inputModal" ng-model="home.currentUserCopy.username" type="text" class="validate">
+                <input id="username" class="inputModal" ng-model="currentUserCopy.username" type="text" class="validate">
             </div>
         </div>
         <div class="row">
             <div class="input-field">
                 <label for="display">Display Name</label>
-                <input id="display" class="inputModal" ng-model="home.currentUserCopy.displayName" type="email" class="validate">
+                <input id="display" class="inputModal" ng-model="currentUserCopy.displayName" type="email" class="validate">
             </div>
         </div>
         <div class="row">
             <div class="input-field">
                 <label for="email">Email</label>
-                <input id="email" class="inputModal" ng-model="home.currentUserCopy.email" type="email" class="validate">
+                <input id="email" class="inputModal" ng-model="currentUserCopy.email" type="email" class="validate">
             </div>
         </div>
     </div>
     <div class="modal-footer">
         <button class="btn modal-close" ng-click="home.updateUser()">Save</button>
-        <a href="#!/home" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
-    </div>
-</div>
-
-<div id="modal2" class="modal modal-fixed-footer modalUser">
-    <div class="modal-content">
-        <h2>Edit scooter:</h2>
-        <div class="row">
-            <div class="input-field">
-                <label for="name">Name</label>
-                <input id="name" class="inputModal" ng-model="scooter.name" type="text" class="validate">
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn modal-close" ng-click="home.updateScooter()">Save</button>
         <a href="#!/home" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
     </div>
 </div>
