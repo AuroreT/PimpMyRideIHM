@@ -1,14 +1,14 @@
 (function() {
     'use strict';
 
-    function DashboardCtrl($scope, $rootScope) {
+    function DashboardCtrl($scope, $rootScope, $location) {
         var vm = this;
         vm.position = undefined;
         vm.temperature = "42°";
         vm.humidity = "61%";
 
         vm.getDatas = function () {
-            
+
         };
 
         vm.refreshDatas = function () {
@@ -59,6 +59,9 @@
          */
         (function () {
             console.log('$token',$rootScope.token);
+            if($rootScope.token == undefined){
+                $location.path('/home');
+            }
             vm.currentUser = $rootScope.currentUser;
             vm.getDatas();
         })();
