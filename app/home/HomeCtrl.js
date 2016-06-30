@@ -11,20 +11,6 @@
         var spinner = new Spinner();
 
         /**
-         * User creation
-         * @param usr
-         */
-        vm.create = function (usr) {
-            console.log(typeof (usr));
-            console.log('usr', usr);
-            UserService.resource2.post(usr, function () {
-                Materialize.toast('Utilisateur créé', 4000);
-                vm.register = false;
-                $rootScope.isLogged = false;
-            });
-        };
-
-        /**
          * Redirection if cancel register
          */
         vm.cancel = function () {
@@ -40,7 +26,6 @@
             ScooterService.scooterByOwner.get({idOwner: $rootScope.currentUser.id, token: $rootScope.token}, function (dt) {
                 vm.scootersList = dt.scooters;
                 spinner.stop();
-                console.log('test récup scooters',vm.scootersList);
             });
         };
         /**
@@ -71,7 +56,6 @@
          * Gestion modales
          */
         vm.openModal = function (mode) {
-            console.log('mode', mode);
             vm.isEditUser = false;
             vm.isConfirmation = false;
             vm.isCreateMode = false;
@@ -86,6 +70,7 @@
             }
             $('#modal1').openModal();
         };
+        
         vm.close = function () {
             $('#modal1').closeModal();
             vm.reinitModalMode();
@@ -103,10 +88,6 @@
          */
         vm.confirmBeforeDelete = function (scooter) {
             vm.reinitModalMode();
-            console.log('scooter mode', scooter);
-            console.log('vm.isCreateMode', vm.isCreateMode);
-            console.log('vm.isConfirmation', vm.isConfirmation);
-            console.log('vm.isEditUser', vm.isEditUser);
             vm.scooterToDelete = scooter;
             vm.isConfirmation = true;
             $('#modal1').openModal();
@@ -114,6 +95,7 @@
 
         /**
          * CRUD scooter
+         * update
          */
         vm.updateScooter = function () {
             var arduinoIDTemp = vm.scooterToEdit.arduinoID;
@@ -128,7 +110,7 @@
         };
 
         /**
-         * Add new scooter
+         * Creation
          */
         vm.newScooter = function(scooter){
             ScooterService.resource2.post({token: $rootScope.token}, scooter, function (scoot) {
@@ -139,7 +121,7 @@
         };
 
         /**
-         * Remove a scooter
+         * Delete
          */
         vm.deleteScooter = function () {
             ScooterService.resource2.delete({token: $rootScope.token, id: vm.scooterToDelete._id}, function (scoot) {
@@ -150,11 +132,22 @@
         };
 
         /**
-         * Modification user
+         * CRUD user
+         * Creation
+         */
+        vm.create = function (usr) {
+            UserService.resource2.post(usr, function () {
+                Materialize.toast('Utilisateur créé', 4000);
+                vm.register = false;
+                $rootScope.isLogged = false;
+            });
+        };
+
+        /**
+         * Updata 
          */
         vm.updateUser = function () {
             $rootScope.currentUser = $rootScope.currentUserCopy;
-            console.log("$currentUser", $rootScope.currentUser);
             UserService.resource.update($rootScope.currentUser, function (datas) {
                 $rootScope.currentUser = datas;
                 vm.close();

@@ -18,6 +18,9 @@
                 $location.path('/home');
             };
 
+            /**
+             * Deconnexion
+             */
             vm.logout = function(){
                 localStorageService.clearAll();
                 window.location.reload();

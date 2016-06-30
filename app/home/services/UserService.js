@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    function UserService($resource, localStorageService, $cookies) {
+    function UserService($resource) {
 
         var apiPath = 'http://pimp-my-ride.herokuapp.com';
         
