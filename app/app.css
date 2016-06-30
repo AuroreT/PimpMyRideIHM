@@ -111,4 +111,48 @@ i{
 
 .refreshBtn{
     padding: 0 !important;
+    background-color: #2a87d6 !important;
+    position: absolute;
+    right: 0.6em;
+    top: 68px;
+}
+
+.refreshBtn:hover{
+    background-color: #449251 !important;
+}
+
+.listScooters{
+    margin: 0;
+}
+
+.labelInfoScooter{
+    margin-left: 1em;
+}
+
+.iconEdit{
+    display: block;
+}
+
+.containerHome button{
+    background-color: #2a87d6;
+}
+
+.containerHome button:hover{
+    background-color: #449251 !important;
+}
+
+.nav-wrapper a:hover{
+    background-color: #2a87d6;
+}
+
+.dataCard{
+    margin-top: 1.6em;
+}
+
+.btnScooter{
+    margin-right: 1em;
+}
+
+.btnAddScoot{
+    display: block;
 }

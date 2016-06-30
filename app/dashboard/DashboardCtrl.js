@@ -1,64 +1,89 @@
 (function() {
     'use strict';
 
-    function DashboardCtrl($scope, $rootScope, $location) {
+    function DashboardCtrl($scope, $rootScope, $location, UserService, ScooterService) {
         var vm = this;
         vm.position = undefined;
-        vm.temperature = "42°";
-        vm.humidity = "61%";
+        var spinner = new Spinner();
 
+        /**
+         * Get datas from sensors by API
+         */
         vm.getDatas = function () {
-
-        };
-
-        vm.refreshDatas = function () {
-            console.log('refresh');
-        };
-
-        angular.extend($scope, {
-            trotinettePlace: {
-                lat: 48.9404504,
-                lng: 2.3038093000000117,
-                zoom: 12
-            },
-            markers: {
-                trotinettePlace: {
-                    lat: 48.9404504,
-                    lng: 2.3038093000000117,
-                    zoom: 12,
-                    message: "Je suis la trotinette",
-                    focus: true,
-                    draggable: false,
-                    doubleClickZoom: true
-                }
-            },
-            defaults: {
-                scrollWheelZoom: false
-            }
-        });
-
-        $scope.addMarkers = function (marker) {
-            angular.extend($scope, {
-                markers: {
-                    trotinettePlace: {
-                        lat: 48.9404504,
-                        lng: 2.3038093000000117,
-                        zoom: 12
+            spinner.spin();
+            UserService.me.get({token: $rootScope.token},function (d) {
+                $rootScope.currentUser = d.user;
+                $rootScope.currentUserCopy = angular.copy($rootScope.currentUser); //for dissociation modal view/page view
+                //Get all his personal scooters
+                ScooterService.scooterByOwner.get({idOwner: $rootScope.currentUser.id, token: $rootScope.token}, function (dt) {
+                    vm.scootersList = dt.scooters;
+                    //Get the actual scooter and its datas
+                    for(var i = 0; i < vm.scootersList.length; i++){
+                        if(vm.scootersList[i].isUsed){
+                            vm.currentScooter = vm.scootersList[i];
+                        }
                     }
-                }
+                    vm.temperature = vm.currentScooter.temperature;
+                    vm.humidity = vm.currentScooter.humidity;
+                    vm.constructMap();
+                });
+
             });
         };
 
-        $scope.$on("leafletDirectiveMarker.dragend", function (event, args) {
-            $scope.position.lat = args.model.lat;
-            $scope.position.lng = args.model.lng;
-        });
+        /**
+         * Clean actual datas and get the new
+         */
+        vm.refreshDatas = function () {
+            vm.temperature = undefined;
+            vm.humidity = undefined;
+            vm.scootersList = undefined;
+            vm.currentScooter = undefined;
+            vm.getDatas();
+        };
+
+        /**
+         * Map gestion
+         */
+
+        vm.constructMap = function () {
+            angular.extend($scope, {
+                trotinettePlace: {
+                    lat: vm.currentScooter.lat,
+                    lng: vm.currentScooter.lng,
+                    zoom: 12
+                },
+                markers: {
+                    trotinettePlace: {
+                        lat: vm.currentScooter.lat,
+                        lng: vm.currentScooter.lng,
+                        zoom: 12,
+                        message: vm.currentScooter.name,
+                        focus: true,
+                        draggable: false,
+                        doubleClickZoom: true
+                    }
+                },
+                defaults: {
+                    scrollWheelZoom: false
+                }
+            });
+            spinner.stop();
+
+
+/*            $scope.$on("leafletDirectiveMarker.dragend", function (event, args) {
+                $scope.position.lat = args.model.lat;
+                $scope.position.lng = args.model.lng;
+            });*/
+        };
 
         /**
          * Point d'entrée du ctrler
          */
         (function () {
-            console.log('$token',$rootScope.token);
+            /**
+             * Redirection if user is not logged
+             */
             if($rootScope.token == undefined){
                 $location.path('/home');
             }

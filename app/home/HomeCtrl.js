@@ -1,21 +1,26 @@
 (function() {
     'use strict';
 
-    function HomeCtrl(localStorageService, $rootScope, UserService, ScooterService, $location) {
+    function HomeCtrl(localStorageService, $rootScope, UserService, ScooterService, $location, $cookies) {
         var vm = this;
 
         $rootScope.currentUser = undefined;
         $rootScope.currentUserCopy = undefined;
-        vm.scootersList = [];
         vm.register = false;
+        vm.scooterToEdit = undefined;
+        var spinner = new Spinner();
 
         /**
          * User creation
          * @param usr
          */
         vm.create = function (usr) {
-            UserService.resource.post(usr, function (datas) {
-                console.log(datas);
+            console.log(typeof (usr));
+            console.log('usr', usr);
+            UserService.resource2.post(usr, function () {
+                Materialize.toast('Utilisateur créé', 4000);
+                vm.register = false;
+                $rootScope.isLogged = false;
             });
         };
 
@@ -28,36 +33,120 @@
         };
 
         /**
+         * Get scooters for the a user
+         */
+        vm.getScooterListByOwner = function () {
+            vm.scootersList = [];
+            ScooterService.scooterByOwner.get({idOwner: $rootScope.currentUser.id, token: $rootScope.token}, function (dt) {
+                vm.scootersList = dt.scooters;
+                spinner.stop();
+                console.log('test récup scooters',vm.scootersList);
+            });
+        };
+        /**
          * Connection user, get datas
          * @param u
          */
         vm.connect = function (u) {
             if(!localStorageService.user){
-                var spinner = new Spinner().spin();
+                spinner.spin();
                 document.getElementById('spinner').appendChild(spinner.el);
                 UserService.token.login({
                     username: u.username,
                     password: u.password
                 }, function (data) {
                     $rootScope.token = data.token;
-                    spinner.stop();
                     UserService.me.get({token: $rootScope.token},function (d) {
                         $rootScope.currentUser = d.user;
+                        $cookies.putObject('currentUser', d.user);
                         $rootScope.currentUserCopy = angular.copy($rootScope.currentUser); //for dissociation modal view/page view
-                        $rootScope.scootersList = $rootScope.currentUser.scooters;
+                        vm.getScooterListByOwner();
                     });
                     $rootScope.isLogged = true;
-                    //window.location.reload();
-                    //$location.path("/home");
                 });
             }
         };
 
         /**
-         * Gestion modal
+         * Gestion modales
          */
-        vm.openModal = function () {
+        vm.openModal = function (mode) {
+            console.log('mode', mode);
+            vm.isEditUser = false;
+            vm.isConfirmation = false;
+            vm.isCreateMode = false;
+            if(mode == 'editUser'){
+                vm.isEditUser = true;
+            }else if(mode == 'createScooter'){
+                vm.isCreateMode = true;
+
+            }else{
+                vm.scooterToEdit = mode;
+                vm.copyScooterToEdit = angular.copy(vm.scooterToEdit); //Work with copy for page vew and modal view dissociation
+            }
             $('#modal1').openModal();
+        };
+        vm.close = function () {
+            $('#modal1').closeModal();
+            vm.reinitModalMode();
+        };
+
+        vm.reinitModalMode = function () {
+            vm.isEditUser = false;
+            vm.isCreateMode = false;
+            vm.isConfirmation = false;
+        };
+
+        /**
+         * Ask confirmation before remove scooter
+         * @param scooter
+         */
+        vm.confirmBeforeDelete = function (scooter) {
+            vm.reinitModalMode();
+            console.log('scooter mode', scooter);
+            console.log('vm.isCreateMode', vm.isCreateMode);
+            console.log('vm.isConfirmation', vm.isConfirmation);
+            console.log('vm.isEditUser', vm.isEditUser);
+            vm.scooterToDelete = scooter;
+            vm.isConfirmation = true;
+            $('#modal1').openModal();
+        };
+
+        /**
+         * CRUD scooter
+         */
+        vm.updateScooter = function () {
+            var arduinoIDTemp = vm.scooterToEdit.arduinoID;
+            vm.scooterToEdit = vm.copyScooterToEdit;
+            ScooterService.resource.update({token: $rootScope.token, arduinoID: arduinoIDTemp}, vm.scooterToEdit,  function (dts) {
+                vm.scooterToEdit = dts;
+                vm.copyScooterToEdit = vm.scooterToEdit;
+                vm.getScooterListByOwner();
+                vm.close();
+                Materialize.toast('Trotinette mise à jour', 4000);
+            });
+        };
+
+        /**
+         * Add new scooter
+         */
+        vm.newScooter = function(scooter){
+            ScooterService.resource2.post({token: $rootScope.token}, scooter, function (scoot) {
+                vm.getScooterListByOwner();
+                vm.close();
+                Materialize.toast('Trotinette créée', 4000);
+            })
+        };
+
+        /**
+         * Remove a scooter
+         */
+        vm.deleteScooter = function () {
+            ScooterService.resource2.delete({token: $rootScope.token, id: vm.scooterToDelete._id}, function (scoot) {
+                vm.getScooterListByOwner();
+                vm.close();
+                Materialize.toast('Trotinette ajoutée', 4000);
+            })
         };
 
         /**
@@ -65,8 +154,11 @@
          */
         vm.updateUser = function () {
             $rootScope.currentUser = $rootScope.currentUserCopy;
+            console.log("$currentUser", $rootScope.currentUser);
             UserService.resource.update($rootScope.currentUser, function (datas) {
-                console.log('vérif maj', datas);
+                $rootScope.currentUser = datas;
+                vm.close();
+                Materialize.toast('Utilisateur mis à jour', 4000);
             });
         };
 
@@ -81,7 +173,10 @@
          * Entry point of controller
          */
         (function () {
-            console.log('currentUser', $rootScope.currentUser);
+
+            var temp = $cookies.get('currentUser');
+            $rootScope.currentUser = JSON.parse(temp);
+            vm.getScooterListByOwner();
 
             //Check if user is already logged
             if($rootScope.token == null){

@@ -1,130 +1,200 @@
-<div class="row">
+<div ng-init="HomeCtrl">
+    <div class="row containerHome">
+        <span id="spinner"></span>
+        <!--LOG FORM - If user has account -->
+        <form class="col s12" ng-if="isLogged === false && home.register == false" ng-submit="home.connect(user)"  autocomplete="on">
+            <fieldset>
 
-    <span id="spinner"></span>
+                <div class="row logForm">
+                    <div class="input-field col s4 offset-s4">
+                        <label for="usernamelog">Username</label>
+                        <input id="usernamelog"  ng-model="user.username" type="text" class="validate" ng-required="true">
+                    </div>
+                </div>
+                <div class="row logForm">
+                    <div class="input-field col s4 offset-s4">
+                        <label for="password">Password</label>
+                        <input id="password" ng-model="user.password" type="password" class="validate" ng-required="true">
+                    </div>
+                </div>
+            </fieldset>
 
-    <!--LOG FORM - If user has account -->
-    <form class="col s12" ng-if="isLogged === false && home.register == false" ng-submit="home.connect(user)"  autocomplete="on">
-        <fieldset>
-
             <div class="row logForm">
-                <div class="input-field col s4 offset-s4">
-                    <label for="usernamelog">Username</label>
-                    <input id="usernamelog"  ng-model="user.username" type="text" class="validate" ng-required="true">
-                </div>
-            </div>
-            <div class="row logForm">
-                <div class="input-field col s4 offset-s4">
-                    <label for="password">Password</label>
-                    <input id="password" ng-model="user.password" type="password" class="validate" ng-required="true">
-                </div>
-            </div>
-        </fieldset>
-
-        <div class="row logForm">
-            <button class="btn waves-effect waves-light" type="submit">Connect
-            </button>
-            <p class="logForm">If you don't have an account yet, <a href="#!/home" ng-click="home.needRegister()">click here</a></p>
-        </div>
-    </form>
-
-    <!-- REGISTER FORM - If user does not have account -->
-    <form class="col s12" ng-if="home.register" ng-submit="home.create(u)"  autocomplete="on">
-        <div class="row logForm">
-            <h3>Create new account</h3>
-            <div class="row logForm">
-                <div class="input-field col s4 offset-s4">
-                    <label for="usernameCreate">Username</label>
-                    <input id="usernameCreate" ng-model="u.username" type="text" class="validate" ng-required="true">
-                </div>
-            </div>
-            <div class="row logForm">
-                <div class="input-field col s4 offset-s4">
-                    <label for="displayName">Display name</label>
-                    <input id="displayName" type="text" ng-model="u.displayName" class="validate">
-                </div>
-            </div>
-            <div class="row logForm">
-                <div class="input-field col s4 offset-s4">
-                    <label for="mail">Email</label>
-                    <input id="mail" type="text" ng-model="u.email" class="validate" ng-required="true">
-                </div>
-            </div>
-            <div class="row logForm">
-                <div class="input-field col s4 offset-s4">
-                    <label for="pass">Password</label>
-                    <input id="pass" type="password" ng-model="u.password" class="validate" ng-required="true">
-                </div>
-            </div>
-            <div class="row logForm">
-                <a class="btn waves-effect waves-light red" type="button" ng-click="home.cancel()">Cancel
-                </a>
-                <button class="btn waves-effect waves-light" type="submit" name="action">Create
+                <button class="btn waves-effect waves-light" type="submit">Connect
                 </button>
+                <p class="logForm">If you don't have an account yet, <a href="#!/home" ng-click="home.needRegister()">click here</a></p>
             </div>
-        </div>
-    </form>
+        </form>
 
-    <!-- PROFILE - If user is logged -->
-    <div ng-if="isLogged && home.register == false" class="showInfo">
-        <h2>Profile</h2>
-        <div class="col s4 offset-s2">
-            <div class="card-panel blue-grey darken-3 cardProfile">
-                <div class="card-content white-text">
-                    <div class="row">
-                        <label>Display Name: </label> <p class="userInfo">{{ currentUser.displayName }}</p>
+        <!-- REGISTER FORM - If user does not have account -->
+        <form class="col s12" ng-if="home.register" ng-submit="home.create(u)"  autocomplete="on">
+            <div class="row logForm">
+                <h3>Create new account</h3>
+                <div class="row logForm">
+                    <div class="input-field col s4 offset-s4">
+                        <label for="usernameCreate">Username</label>
+                        <input id="usernameCreate" ng-model="u.username" type="text" class="validate" ng-required="true">
                     </div>
-                    <div class="row">
-                        <label>Username: </label><p class="userInfo">{{ currentUser.username }}</p>
+                </div>
+                <div class="row logForm">
+                    <div class="input-field col s4 offset-s4">
+                        <label for="displayName">Display name</label>
+                        <input id="displayName" type="text" ng-model="u.displayName" class="validate">
                     </div>
-                    <div class="row">
-                        <label>Email: </label><p class="userInfo">{{ currentUser.email }}</p>
+                </div>
+                <div class="row logForm">
+                    <div class="input-field col s4 offset-s4">
+                        <label for="mail">Email</label>
+                        <input id="mail" type="email" ng-model="u.email" class="validate" ng-required="true">
                     </div>
-                    <div class="row">
+                </div>
+                <div class="row logForm">
+                    <div class="input-field col s4 offset-s4">
+                        <label for="pass">Password</label>
+                        <input id="pass" type="password" ng-model="u.password" class="validate" ng-required="true">
                     </div>
-
-                    <button ng-click="home.openModal()" class="btn modal-trigger"><i class="fa fa-pencil" aria-hidden="true"></i>
-                        Edit
+                </div>
+                <div class="row logForm">
+                    <a class="btn waves-effect waves-light red" type="button" ng-click="home.cancel()">Cancel
+                    </a>
+                    <button class="btn waves-effect waves-light" type="submit">Create
                     </button>
                 </div>
             </div>
-        </div>
-    </div>
-    </div>
-        <ul class="collection with-header" ng-repeat="scooter in home.scootersList">
-            <li class="collection-header"><h4>My scooters</h4></li>
-            <li class="collection-item">
-                <div> {{ scooter.name }}
-                </div>
-            </li>
-        </ul>
-    </div>
-</div>
+        </form>
 
-<!-- Modal Structure -->
-<div id="modal1" class="modal modal-fixed-footer modalUser">
-    <div class="modal-content">
-        <h2>Edit profile</h2>
-        <div class="row">
-            <div class="input-field">
-                <label for="username">Username</label>
-                <input id="username" class="inputModal" ng-model="currentUserCopy.username" type="text" class="validate">
+        <!-- PROFILE - If user is logged -->
+        <div ng-if="isLogged && home.register == false" class="showInfo">
+            <h2>Profile</h2>
+            <div class="col s4 offset-s2">
+                <div class="card-panel blue-grey darken-3 cardProfile">
+                    <div class="card-content white-text">
+                        <div class="row">
+                            <label>Display Name: </label> <p class="userInfo">{{ currentUser.displayName }}</p>
+                        </div>
+                        <div class="row">
+                            <label>Username: </label><p class="userInfo">{{ currentUser.username }}</p>
+                        </div>
+                        <div class="row">
+                            <label>Email: </label><p class="userInfo">{{ currentUser.email }}</p>
+                        </div>
+                        <button ng-click="home.openModal('editUser')" class="btn modal-trigger"><i class="fa fa-pencil" aria-hidden="true"></i>
+                            Edit
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="input-field">
-                <label for="display">Display Name</label>
-                <input id="display" class="inputModal" ng-model="currentUserCopy.displayName" type="email" class="validate">
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field">
-                <label for="email">Email</label>
-                <input id="email" class="inputModal" ng-model="currentUserCopy.email" type="email" class="validate">
+            <div class="col s5">
+                <ul class="collection with-header listScooters">
+                    <li class="collection-header">
+                        <h4>My scooters <button class="btn btnScooter" ng-click="home.openModal('createScooter')"><i class="fa fa-plus btnAddScoot" aria-hidden="true"></i></button></h4>
+                    </li>
+                    <li class="collection-item" ng-repeat="scooter in home.scootersList">
+                        <div>
+                            <label>Nom: </label> {{ scooter.name }}
+                            <label class="labelInfoScooter">Numero GSM</label> {{ scooter.phone }}
+                            <label class="labelInfoScooter">Arduino ID</label> {{ scooter.arduinoID }}
+                            <button ng-click="home.confirmBeforeDelete(scooter)" class="btn btnScooter"><i class="fa fa-trash iconEdit" aria-hidden="true"></i></button>
+                            <button ng-click="home.openModal(scooter)" class="btn"><i class="fa fa-pencil iconEdit" aria-hidden="true"></i></button>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <button class="btn modal-close" ng-click="home.updateUser()">Save</button>
-        <a href="#!/home" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal modal-fixed-footer modalUser">
+        <!-- If user edition -->
+        <div ng-if="home.isEditUser">
+            <div class="modal-content">
+                <h2>Edit profile</h2>
+                <div class="row">
+                    <div class="input-field">
+                        <label for="username">Username</label>
+                        <input id="username" class="inputModal" ng-model="currentUserCopy.username" type="text" class="validate">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field">
+                        <label for="display">Display Name</label>
+                        <input id="display" class="inputModal" ng-model="currentUserCopy.displayName" type="text" class="validate">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field">
+                        <label for="email">Email</label>
+                        <input id="email" class="inputModal" ng-model="currentUserCopy.email" type="email" class="validate">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn modal-close" ng-click="home.updateUser()">Save</button>
+                <a href="#!/home" ng-click="home.close()" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+            </div>
+        </div>
+
+        <!-- If scooter edition -->
+        <div ng-if="home.isEditUser == false && home.isCreateMode == false && home.isConfirmation == false">
+            <div class="modal-content">
+                <h2>Edit scooters</h2>
+                <div class="row">
+                    <div class="input-field">
+                        <label for="nameScoot">Nom</label>
+                        <input id="nameScoot" class="inputModal" ng-model="home.copyScooterToEdit.name" type="text" class="validate">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field">
+                        <label for="gsmScooter">N° GSM</label>
+                        <input id="gsmScooter" class="inputModal" ng-model="home.copyScooterToEdit.phone" maxlength= 10 type="text" class="validate">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field">
+                        <label for="arduinoid">ArduinoID</label>
+                        <input id="arduinoid" class="inputModal" ng-model="home.copyScooterToEdit.arduinoID"  maxlength= 12 type="text" class="validate">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn modal-close" ng-click="home.updateScooter()">Save</button>
+                <a href="#!/home" ng-click="home.close()" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+            </div>
+        </div>
+
+        <!-- If creationScooter mode -->
+        <div ng-if="home.isCreateMode == true">
+            <div class="modal-content">
+                <h2>Créer une trotinette</h2>
+                <div class="input-field">
+                    <label for="nameNewScooter">Nom</label>
+                    <input id="nameNewScooter" class="inputModal" ng-model="scooterToCreate.name" type="text" class="validate" ng-required="true">
+                </div>
+                <div class="input-field">
+                    <label for="arduinoIDnewScooter">ArduinoID</label>
+                    <input id="arduinoIDnewScooter" class="inputModal" ng-model="scooterToCreate.arduinoID" maxlength=12 type="text" class="validate" ng-required="true">
+                </div>
+                <div class="input-field">
+                    <label for="gsmNewScooter">N° GSM</label>
+                    <input id="gsmNewScooter" class="inputModal" ng-model="scooterToCreate.phone" maxlength= 10 type="text" class="validate">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn modal-close" ng-click="home.newScooter(scooterToCreate)">Ajouter</button>
+                <a href="#!/home" ng-click="home.close()" class="modal-action modal-close waves-effect waves-green btn-flat ">Annuler</a>
+            </div>
+        </div>
+
+        <!-- If confirmation mode -->
+        <div ng-if="home.isConfirmation == true">
+            <div class="modal-content">
+                <h2>Supprimer ?</h2>
+            </div>
+            <div class="modal-footer">
+                <button class="btn modal-close" ng-click="home.deleteScooter(scooter)">Oui</button>
+                <a href="#!/home" ng-click="home.close()" class="modal-action modal-close waves-effect waves-green btn-flat ">Non</a>
+            </div>
+        </div>
     </div>
 </div>

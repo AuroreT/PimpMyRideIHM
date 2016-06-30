@@ -9,7 +9,8 @@ var app = angular.module('myApp', [
     'myApp.version',
     'leaflet-directive',
     'ngStorage',
-    'LocalStorageModule'
+    'LocalStorageModule',
+    'ngCookies'
 ]);
 
     app.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider,$rootScope, localStorageService, $localStorage, $route, $location) {

@@ -1,19 +1,19 @@
 (function() {
     'use strict';
 
-    function UserService($resource, localStorageService, $rootScope) {
+    function UserService($resource, localStorageService, $cookies) {
 
         var apiPath = 'http://pimp-my-ride.herokuapp.com';
-
-        var tokn = "";
-
-        if (localStorageService.get('token')){
-            tokn =  localStorageService.get('token');
-        };
         
         var token = $resource(apiPath+'/token', {}, {
             login:{
                 method: 'POST'
+            }
+        });
+
+        var resource2 = $resource(apiPath+'/users', {}, {
+            post: {
+                method: "POST"
             }
         });
 
@@ -33,7 +33,8 @@
         return {
             resource: resource,
             token: token,
-            me: me
+            me: me,
+            resource2: resource2
         };
     }
     angular.module('home').factory('UserService', UserService);
